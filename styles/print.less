@@ -1,0 +1,26 @@
+/* 页面大小与边距 */
+@page {
+  size: A4;
+  margin: 48px 0 32px;
+}
+
+/* 第一页顶部去掉边距 */
+@page :first {
+  margin-top: 0;
+}
+
+// 覆盖打印样式
+@media print {
+
+  // 隐藏部分元素
+  .status-bar .status,
+  .pdf,
+  footer.license-footer {
+    display: none;
+  }
+
+  // 内容
+  body {
+    background-color: unset;
+  }
+}
