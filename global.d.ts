@@ -26,4 +26,5 @@ interface Information {
     email: string;
     blog: string;
     github: string;
+    last_updated: string;
 }

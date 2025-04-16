@@ -42,7 +42,7 @@ const { data } = defineProps<{
 
 .project-name {
   position: relative;
-  padding-left: 12px;
+  padding-left: 18px;
 
   &::before {
     content: "";

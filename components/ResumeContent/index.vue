@@ -9,7 +9,7 @@
 import SkillSection from './components/SkillSection.vue';
 import ExperienceSection from './components/ExperienceSection.vue';
 
-const { data } = await useAsyncData(() => useDirectusRest<{ skills: string, experiences: [] }>(readItems('r_content', {
+const { data } = await useAsyncData(() => useDirectusRest<{ skills: string, experiences: [], last_updated: string; }>(readItems('r_content', {
   fields: [
     'skills',
     {
@@ -17,6 +17,10 @@ const { data } = await useAsyncData(() => useDirectusRest<{ skills: string, expe
     }
   ]
 })))
+
+const { contentTime } = useLastUpdated()
+
+contentTime.value = data.value?.last_updated
 
 </script>
 

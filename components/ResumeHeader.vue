@@ -47,6 +47,10 @@
 <script lang="ts" setup>
 
 const { data } = await useAsyncData(() => useDirectusRest<Information>(readItems('information')))
+
+const { headerTime } = useLastUpdated()
+headerTime.value = data.value?.last_updated
+
 </script>
 
 <style lang="less" scoped>
