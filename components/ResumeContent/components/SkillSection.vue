@@ -25,7 +25,7 @@ const props = defineProps<{
     li {
       position: relative;
       margin-bottom: 8px;
-      text-indent: 20px;
+      padding-left: 20px;
       line-height: 30px;
 
       &::before {

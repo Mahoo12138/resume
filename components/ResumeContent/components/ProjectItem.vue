@@ -31,35 +31,65 @@ const { data } = defineProps<{
   }
 
   &__content {
+    line-height: 30px;
     :deep(p) {
-      line-height: 28px;
       text-align: justify;
       word-break: break-all;
-      margin-bottom: 3px;
+    }
+    :deep(li) {
+      position: relative;
+      padding-left: 20px;
+    }
+
+    :deep(li)::before {
+      content: '';
+      position: absolute;
+      left: 0.5em;
+      top: 50%;
+      width: 4px;
+      height: 4px;
+      background: #c7c7c7;
+      border-radius: 50%;
+      transform: translateY(50%);
     }
   }
 }
 
 .project-name {
-  position: relative;
-  padding-left: 18px;
-
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0.5em;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4px;
-    height: 4px;
-    background: #00b38a;
-    border-radius: 50%;
-  }
+  font-size: 14px;
+  height: 22px;
+  font-weight: 500;
+  color: #474747;
+  margin: 0 1px;
+  padding: 0 3px;
+  border-bottom: 1px solid #00aa7f8a;
+  box-shadow: inset 0 -8px #00aa7f42;
+  //position: relative;
+  //text-indent: 20px;
+  //
+  //&::before {
+  //  content: "";
+  //  position: absolute;
+  //  left: 0.5em;
+  //  top: 50%;
+  //  transform: translateY(-50%);
+  //  width: 4px;
+  //  height: 4px;
+  //  background: #00b38a;
+  //  border-radius: 50%;
+  //}
 }
 
 .project-role {
   strong {
-    .strong();
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 500;
+    color: #474747;
+    margin: 0 1px;
+    padding: 0 3px;
+    border-bottom: 1px solid #eaeaea;
+    box-shadow: inset 0 -8px #eaeaea;
   }
 }
 </style>
