@@ -21,7 +21,7 @@ const { data } = defineProps<{
 </script>
 
 <style lang="less" scoped>
-@import "@/styles/mixins.less";
+@import '@/styles/vars.less';
 
 .project-item {
   &__header {
@@ -45,10 +45,10 @@ const { data } = defineProps<{
       content: '';
       position: absolute;
       left: 0.5em;
-      top: 50%;
+      top: 0.8em;
       width: 4px;
       height: 4px;
-      background: #c7c7c7;
+      background: @color-main;
       border-radius: 50%;
       transform: translateY(50%);
     }
