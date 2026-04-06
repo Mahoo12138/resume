@@ -1,7 +1,7 @@
 <template>
-  <section id="skill">
-    <SectionHeader title="个人技能" />
-    <div v-html="props.skills"></div>
+  <section class="rich-text-section">
+    <SectionHeader :title="section.title" />
+    <div v-html="section.html"></div>
   </section>
 </template>
 
@@ -9,15 +9,13 @@
 
 import SectionHeader from "~/components/SectionHeader.vue";
 
-const props = defineProps<{
-  skills?: string | null
+defineProps<{
+  section: ResumeRichTextSection
 }>()
 </script>
 
 <style lang="less" scoped>
-@import '@/styles/vars.less';
-
-#skill {
+.rich-text-section {
   padding: 16px 16px 24px;
 
   :deep(ul) {
@@ -35,7 +33,7 @@ const props = defineProps<{
         top: 0.8em;
         width: 4px;
         height: 4px;
-        background-color: @color-main;
+        background-color: var(--color-primary);
         border-radius: 50%;
       }
     }
@@ -44,11 +42,11 @@ const props = defineProps<{
     font-size: 14px;
     line-height: 16px;
     font-weight: 500;
-    color: #474747;
+    color: var(--color-text-emphasis);
     margin: 0 1px;
     padding: 0 3px;
-    border-bottom: 1px solid #eaeaea;
-    box-shadow: inset 0 -8px #eaeaea;
+    border-bottom: 1px solid var(--color-chip-border);
+    box-shadow: inset 0 -8px var(--color-chip-bg);
   }
 }
 </style>

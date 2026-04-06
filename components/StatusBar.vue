@@ -3,31 +3,35 @@
     <a class="status" href="https://github.com/Mahoo12138/resume" target="_blank">
       <i class="icon icon-rss"></i> 简历模版
     </a>
-    <p class="last-modified">最后更新时间： {{ lastUpdate }}</p>
+    <p v-if="lastUpdate" class="last-modified">最后更新时间： {{ lastUpdate }}</p>
   </div>
 </template>
 
 <script lang="ts" setup>
-const { latestTime } = useLastUpdated()
+const resume = useResumeData()
+const latestTime = computed(() => resume.value.lastUpdated)
 
 const lastUpdate = computed(() => {
   if (!latestTime.value) {
-    return "未知"
+    return ""
   }
   const date = new Date(latestTime.value)
   if (isNaN(date.getTime())) {
     return "数据错误"
   }
-  if (date.getDate() === new Date().getDate()) {
+  const now = new Date()
+  const dayDiff = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24))
+
+  if (dayDiff <= 0) {
     return '今天'
   }
-  if (date.getDate() === new Date().getDate() - 1) {
+  if (dayDiff === 1) {
     return '昨天'
   }
-  if (date.getDate() - new Date().getDate() < 7) {
+  if (dayDiff < 7) {
     return '上周'
   }
-  if (date.getDate() - new Date().getDate() < 30) {
+  if (dayDiff < 30) {
     return '上月'
   }
   return `${date.getFullYear()} 年 ${date.getMonth() + 1} 月`
@@ -48,8 +52,9 @@ const lastUpdate = computed(() => {
   @media screen and (max-width: 1024px) {
     width: auto;
     top: auto;
-    bottom: 38px;
-    color: #d1d1d1;
+    bottom: -10px;
+    color: var(--color-text-muted);
+    padding-bottom: 10px;
     text-align: center;
   }
 
@@ -58,7 +63,12 @@ const lastUpdate = computed(() => {
     align-items: center;
     float: left;
     cursor: pointer;
-    color: #bbb;
+    color: var(--color-text-muted);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--color-primary);
+    }
 
     @media screen and (max-width: 1024px) {
       float: unset;
@@ -72,7 +82,7 @@ const lastUpdate = computed(() => {
 
   .last-modified {
     float: right;
-    color: #bbb;
+    color: var(--color-text-muted);
 
     @media screen and (max-width: 1024px) {
       float: unset;
@@ -91,7 +101,7 @@ const lastUpdate = computed(() => {
     bottom: 24px;
     text-align: left;
     padding: 0 48px;
-    color: #d1d1d1;
+    color: var(--color-text-muted);
     font-size: 12px;
     line-height: 24px;
 

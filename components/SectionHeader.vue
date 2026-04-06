@@ -23,7 +23,7 @@ const { title } = defineProps<{title: string}>()
   flex: 1;
   display: inline-flex;
   height: 0;
-  border-top: 1px solid #f1f1f1;
+  border-top: 1px solid var(--color-section-line);
   vertical-align: middle;
 }
 .section-title {
@@ -36,7 +36,7 @@ const { title } = defineProps<{title: string}>()
   font-size: 16px;
   line-height: 32px;
   text-align: center;
-  color: #474747;
-  background-color: #f1f1f1;
+  color: var(--color-text-emphasis);
+  background-color: var(--color-section-bg);
 }
 </style>

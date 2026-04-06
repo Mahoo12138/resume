@@ -45,11 +45,8 @@
 </template>
 
 <script lang="ts" setup>
-
-const { data } = await useAsyncData(() => useDirectusRest<Information>(readItems('information')))
-
-const { headerTime } = useLastUpdated()
-headerTime.value = data.value?.last_updated
+const resume = useResumeData()
+const data = computed(() => resume.value.information)
 
 </script>
 
@@ -58,9 +55,10 @@ headerTime.value = data.value?.last_updated
 
 .resume-header {
   padding: 32px 48px 24px;
-  color: #fff;
-  background-color: @color-main;
+  color: var(--color-text-inverse);
+  background-color: var(--color-primary);
   overflow: hidden;
+  transition: background-color 0.24s ease;
 
   @media screen and (max-width: 720px) {
     padding: 24px;
@@ -68,7 +66,7 @@ headerTime.value = data.value?.last_updated
 
   .title-section {
     margin-bottom: 8px;
-    border-bottom: 2px solid darken(@color-main, 2%);
+    border-bottom: 2px solid var(--color-primary-strong);
     font-size: 48px;
     overflow: hidden;
     display: flex;
@@ -105,7 +103,7 @@ headerTime.value = data.value?.last_updated
       @media screen and (max-width: 720px) {
         margin: 8px auto 0;
         padding: 16px 4px;
-        border-top: 1px solid darken(@color-main, 2%);
+        border-top: 1px solid var(--color-primary-strong);
       }
 
       .location {
@@ -175,10 +173,10 @@ headerTime.value = data.value?.last_updated
           font-family: @font-family-title;
           font-size: 14px;
           line-height: 24px;
-          color: #fff;
+          color: var(--color-text-inverse);
 
           &:hover {
-            color: #e8e8e8;
+            color: var(--color-text-inverse-muted);
           }
 
           .contact-link {

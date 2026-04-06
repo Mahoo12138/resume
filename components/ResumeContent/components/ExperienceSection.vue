@@ -1,8 +1,8 @@
 <template>
-  <section id="experience">
-    <SectionHeader title="工作经验" />
-    <template v-for="item in experiences">
-      <ExperienceItem :data="item"/>
+  <section class="grouped-section">
+    <SectionHeader :title="section.title" />
+    <template v-for="group in section.groups" :key="group.title">
+      <ExperienceItem :group="group"/>
     </template>
   </section>
 </template>
@@ -12,13 +12,13 @@
 import SectionHeader from "~/components/SectionHeader.vue";
 import ExperienceItem from "~/components/ResumeContent/components/ExperienceItem.vue";
 
-const props = defineProps<{
-  experiences?: Experience[] | null
+defineProps<{
+  section: ResumeGroupedEntriesSection
 }>()
 </script>
 
 <style scoped>
-#experience {
+.grouped-section {
   margin: 16px 16px 24px;
   overflow: hidden;
 

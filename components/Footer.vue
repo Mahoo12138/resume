@@ -32,7 +32,12 @@ footer {
 
   .footer-link {
     display: inline;
-    color: #d1d1d1;
+    color: var(--color-text-muted);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--color-primary);
+    }
 
     .icon {
       width: 13px;
