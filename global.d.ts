@@ -1,14 +1,46 @@
-interface Experience {
-    name: string;
-    time: string;
-    status: string;
-    projects: Project[]
+interface ResumeMetaItem {
+    html: string;
 }
 
-interface Project {
-    name: string;
-    role: string;
+interface ResumeEntry {
+    title: string;
+    meta: ResumeMetaItem[];
     content: string;
+}
+
+interface ResumeGroup {
+    title: string;
+    meta: ResumeMetaItem[];
+    entries: ResumeEntry[];
+}
+
+interface ResumeRichTextSection {
+    key: string;
+    title: string;
+    kind: "rich-text";
+    html: string;
+}
+
+interface ResumeGroupedEntriesSection {
+    key: string;
+    title: string;
+    kind: "grouped-entries";
+    groups: ResumeGroup[];
+}
+
+interface ResumeEntryListSection {
+    key: string;
+    title: string;
+    kind: "entries";
+    entries: ResumeEntry[];
+}
+
+type ResumeSection = ResumeRichTextSection | ResumeGroupedEntriesSection | ResumeEntryListSection;
+
+interface ResumeData {
+    information: Information;
+    sections: ResumeSection[];
+    lastUpdated: string;
 }
 
 interface Information {
@@ -26,5 +58,9 @@ interface Information {
     email: string;
     blog: string;
     github: string;
-    last_updated: string;
+}
+
+declare module "*.md?raw" {
+    const content: string;
+    export default content;
 }
