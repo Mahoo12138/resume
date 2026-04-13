@@ -34,6 +34,11 @@ const SECTION_RULES: Record<string, ResumeSectionRule> = {
     kind: "entries",
     title: "项目经历",
   },
+  "个人项目": {
+    key: "personal-projects",
+    kind: "entries",
+    title: "个人项目",
+  },
   "开源作品": {
     key: "open-source",
     kind: "entries",
@@ -61,6 +66,19 @@ const renderInlineMarkdown = (source: string) => {
   }
 
   return markdown.renderInline(trimmed);
+};
+
+const renderMetaLine = (source: string) => {
+  const trimmed = source.trim();
+  const keyValueMatch = trimmed.match(/^([^:：]+)\s*([:：])\s*(.+)$/);
+
+  if (!keyValueMatch) {
+    return renderInlineMarkdown(trimmed);
+  }
+
+  const [, , , value] = keyValueMatch;
+
+  return renderInlineMarkdown(value);
 };
 
 const getFrontmatterString = (value: unknown, fallback = "") => {
@@ -148,20 +166,46 @@ const splitParagraphs = (source: string) => {
 };
 
 const extractMetaAndBody = (source: string) => {
-  const paragraphs = splitParagraphs(source);
   const meta: ResumeMetaItem[] = [];
-  let paragraphIndex = 0;
+  let remaining = source.trimStart();
 
-  while (paragraphIndex < paragraphs.length && /^\+\s+/.test(paragraphs[paragraphIndex])) {
+  while (remaining) {
+    const codeBlockMatch = remaining.match(/^```[^\n]*\n([\s\S]*?)\n```\s*/);
+
+    if (codeBlockMatch) {
+      const metaLines = codeBlockMatch[1]
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean);
+
+      if (!metaLines.length || !metaLines.every((line) => /[:：]/.test(line))) {
+        break;
+      }
+
+      meta.push(
+        ...metaLines.map((line) => ({
+          html: renderMetaLine(line),
+        })),
+      );
+      remaining = remaining.slice(codeBlockMatch[0].length).trimStart();
+      continue;
+    }
+
+    const plusLineMatch = remaining.match(/^\+\s+(.+?)\s*(?:\n|$)/);
+
+    if (!plusLineMatch) {
+      break;
+    }
+
     meta.push({
-      html: renderInlineMarkdown(paragraphs[paragraphIndex].replace(/^\+\s+/, "")),
+      html: renderMetaLine(plusLineMatch[1]),
     });
-    paragraphIndex += 1;
+    remaining = remaining.slice(plusLineMatch[0].length).trimStart();
   }
 
   return {
     meta,
-    body: paragraphs.slice(paragraphIndex).join("\n\n"),
+    body: remaining.trim(),
   };
 };
 
