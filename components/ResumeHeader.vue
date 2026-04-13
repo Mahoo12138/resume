@@ -16,8 +16,10 @@
     <section class="contact-section">
       <ul>
         <li>
-          <a :href="`tel:${data?.phone}`" target="_blank">
-            <span class="contact-link">{{ data?.phone }}</span>
+          <a :href="phoneHref || undefined" target="_blank" class="contact-anchor contact-anchor--phone"
+            :data-tooltip="phoneTooltipText" :aria-label="phoneTooltipText">
+            <span class="contact-link contact-link--screen contact-link--tooltip">{{ data?.phone }}</span>
+            <span class="contact-link contact-link--print">{{ phoneDisplayForPrint }}</span>
             <i class="icon icon-phone"></i>
           </a>
         </li>
@@ -46,7 +48,21 @@
 
 <script lang="ts" setup>
 const resume = useResumeData()
+const { printPhone, getDialablePhone } = useResumePrintPhone()
 const data = computed(() => resume.value.information)
+
+const phoneDisplayForPrint = computed(() => {
+  return printPhone.value || data.value?.phone || ''
+})
+
+const phoneTooltipText = '手机号已做隐私遮挡'
+
+const phoneHref = computed(() => {
+  const phone = printPhone.value || data.value?.phone || ''
+  const dialablePhone = getDialablePhone(phone)
+
+  return dialablePhone ? `tel:${dialablePhone}` : ''
+})
 
 </script>
 
@@ -179,7 +195,56 @@ const data = computed(() => resume.value.information)
             color: var(--color-text-inverse-muted);
           }
 
+          &.contact-anchor--phone {
+            position: relative;
+
+            &::before {
+              position: absolute;
+              left: 50%;
+              opacity: 0;
+              pointer-events: none;
+              transition: opacity 0.18s ease, transform 0.18s ease;
+            }
+
+            &::before {
+              content: attr(data-tooltip);
+              bottom: calc(100% + 8px);
+              z-index: 2;
+              width: max-content;
+              max-width: 240px;
+              padding: 8px 10px;
+              border-radius: 10px;
+              border: 1px solid var(--color-switcher-border);
+              background: var(--color-card-bg);
+              box-shadow: 0 14px 32px rgba(18, 26, 35, 0.18);
+              color: var(--color-text);
+              font-size: 12px;
+              line-height: 1.5;
+              text-align: left;
+              white-space: normal;
+              transform: translate(-50%, 6px);
+            }
+
+            &:hover::before,
+            &:focus-visible::before {
+              opacity: 1;
+              transform: translate(-50%, 0);
+            }
+
+            @media screen and (max-width: 720px) {
+
+              &::before,
+              &::after {
+                display: none;
+              }
+            }
+          }
+
           .contact-link {
+            &--print {
+              display: none;
+            }
+
             @media screen and (max-width: 720px) {
               display: none;
             }
@@ -191,6 +256,28 @@ const data = computed(() => resume.value.information)
 
             @media screen and (max-width: 720px) {
               font-size: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media print {
+  .resume-header {
+    .contact-section {
+      ul {
+        >li {
+          >a {
+            .contact-link {
+              &--screen {
+                display: none;
+              }
+
+              &--print {
+                display: inline;
+              }
             }
           }
         }

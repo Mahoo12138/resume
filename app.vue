@@ -43,6 +43,7 @@ watch(theme, (value) => {
 #resume-content {
   position: relative;
   width: 1024px;
+  min-width: 430px;
   margin: 64px auto 32px;
   background-color: var(--color-card-bg);
   border-radius: 5px;
